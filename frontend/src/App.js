@@ -1,6 +1,7 @@
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
 import React from 'react';
 import Form from './pages/Form';
+import FormTwo from './pages/FormTwo';
 
 function App() {
   return(
