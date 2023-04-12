@@ -4,11 +4,11 @@ const Schema = mongoose.Schema;
 
 const financeSchema = new Schema(
   {
-    salesID: {
+    salesId: {
       type: String,
       required: true,
     },
-    invoiceID: {
+    invoiceId: {
       type: Number,
       required: true,
     },
@@ -20,7 +20,7 @@ const financeSchema = new Schema(
       type: Number,
       required: true,
     },
-    branchID: {
+    branchId: {
       type: String,
       required: true,
     },

@@ -26,16 +26,16 @@ const getFinanceDetail = async (req, res) => {
 
 //create new detail
 const createFinanceDetail = async (req, res) => {
-  const { salesID, invoiceID, dateAndTime, amount, branchID } = req.body;
+  const { salesId, invoiceId, dateAndTime, amount, branchId } = req.body;
 
   //add doc to db
   try {
     const finance = await FinanceDetail.create({
-      salesID,
-      invoiceID,
+      salesId,
+      invoiceId,
       dateAndTime,
       amount,
-      branchID,
+      branchId,
     });
     res.status(200).json(finance);
   } catch (error) {
