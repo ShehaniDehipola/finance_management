@@ -1,5 +1,6 @@
 import React from "react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 
 import "./form.css";
 
@@ -10,6 +11,7 @@ const Form = () => {
   const [amount, setAmount] = useState("");
   const [branchId, setBranchId] = useState("");
   const [error, setError] = useState(null);
+  const navigate = useNavigate()
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -44,6 +46,7 @@ const Form = () => {
         setBranchId("");
         setError(null);
         console.log("New finance record added", json);
+        navigate("/financedetails")
       }
     } catch (error) {
       setError("Something went wrong");

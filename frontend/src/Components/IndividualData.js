@@ -1,15 +1,15 @@
-import React from 'react'
+import React from "react";
 
-const IndividualData = ({individualExcelData}) => {
+const IndividualData = ({ individualExcelData }) => {
   return (
-    <div>
-      <th>{individualExcelData.SalesID}</th>
-      <th>{individualExcelData.InvoiceID}</th>
-      <th>{individualExcelData.DateAndTime}</th>
-      <th>{individualExcelData.Amount}</th>
-      <th>{individualExcelData.BranchID}</th>
-    </div>
-  )
-}
+    <tr key={individualExcelData.SalesID}>
+      <td>{individualExcelData.SalesID}</td>
+      <td>{individualExcelData.InvoiceID}</td>
+      <td>{individualExcelData.DateAndTime}</td>
+      <td>{individualExcelData.Amount}</td>
+      <td>{individualExcelData.BranchID}</td>
+    </tr>
+  );
+};
 
-export default IndividualData
+export default IndividualData;

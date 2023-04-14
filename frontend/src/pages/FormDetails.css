@@ -1,7 +1,64 @@
 .table-container{
-    border: 5px solid black;
+    height: 100%;
+    width: 82%;
+    margin-left: 220px;
+    margin-top: 20px;
+}
+
+.d-flex{
+    margin-left: 10px;
+}
+
+.search-bar{
+    height: 30px;
+    width: 250px;
+    border: 1px solid black;
 }
 
 .table{
-    background-color: aqua;
+    border-collapse: collapse ;
+    width: 100%;
+}
+
+.table-head{
+    background-color: #eeeeee;
+    padding: 10px;
+    vertical-align: middle;
+}
+
+.th{
+    font-size: 15px;
+    font-family: monospace;
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.table-data{
+    background-color: #ffffff;
+    padding: 2px;
+}
+
+.td{
+    font-size: 15px;
+    font-family: Arial, Helvetica, sans-serif;
+    padding: 8px;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.btn{
+    height: 30px;
+    width: 70px;
+    border: none;
+    border-radius: 5px;
+}
+
+.btn-edit{
+    background-color: #5cb3f6;
+}
+
+.btn-delete{
+    background-color: #f86a6a;
+    margin-left: 10px;
 }

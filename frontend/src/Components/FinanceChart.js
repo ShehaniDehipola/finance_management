@@ -1,8 +1,24 @@
-import React from 'react'
-import { Bar } from 'react-chartjs-2'
-import { Chart as ChartJS } from 'chart.js/auto'
-import {useState} from 'react'
+import React, {useState} from 'react'
+import {
+  Chart as ChartJS,
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend,
+} from 'chart.js';
+import {Bar} from 'react-chartjs-2';
 import "./FinanceChart.css"
+
+ChartJS.register(
+  CategoryScale,
+  LinearScale,
+  BarElement,
+  Title,
+  Tooltip,
+  Legend
+);
 
 const FinanceChart = () => {
 
@@ -26,17 +42,28 @@ const FinanceChart = () => {
     ]
   }
 
-  const optionsWeek = {
-    scales: {
-      yAxes: [
-        {
-          ticks: {
-            beginAtZero: true,
-          }
-        }
-      ]
-    }
-  } 
+
+  const options = {
+    responsive: true,
+    plugins: {
+      legend: {
+        position: 'top',
+      },
+      title: {
+        display: false,
+        text: 'Chart.js Bar Chart',
+      },
+    },
+    // scales: {
+    //   yAxes: [
+    //     {
+    //       ticks: {
+    //         beginAtZero: true,
+    //       }
+    //     }
+    //   ]
+    // }
+  };
 
   const dataMonth = {
 
@@ -52,18 +79,6 @@ const FinanceChart = () => {
     ]
   }
 
-  const optionsMonth = {
-    scales: {
-      yAxes: [
-        {
-          ticks: {
-            beginAtZero: true,
-          }
-        }
-      ]
-    }
-  } 
-
   const dataYear = {
 
     labels:["2020", "2021", "2022", "2023"],
@@ -78,17 +93,6 @@ const FinanceChart = () => {
     ]
   }
 
-  const optionsYear = {
-    scales: {
-      yAxes: [
-        {
-          ticks: {
-            beginAtZero: true,
-          }
-        }
-      ]
-    }
-  } 
   return (
 
     <div>
@@ -113,7 +117,7 @@ const FinanceChart = () => {
             data={dataWeek} 
             height={590}
             width={1500}
-            options={optionsWeek}
+            options={options}
             />
           )}
 
@@ -122,7 +126,7 @@ const FinanceChart = () => {
             data={dataMonth} 
             height={590}
             width={1500}
-            options={optionsMonth}
+            options={options}
             />
           )}
 
@@ -131,7 +135,7 @@ const FinanceChart = () => {
             data={dataYear} 
             height={590}
             width={1500}
-            options={optionsYear}
+            options={options}
             />
           )}
         </div>

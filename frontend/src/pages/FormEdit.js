@@ -14,11 +14,11 @@ const FormEdit = () => {
         branchId:""
     })
 
-    const setData = (e) =>{
-        const {salesId, value} = e.target;
+    const setData = (e, key) =>{
+         const {value} = e.target;
         setFormData(prevState => ({
             ...prevState,
-            [salesId]:value
+            [key]:value
         }))
     }
 
@@ -27,7 +27,7 @@ const FormEdit = () => {
 
     const getData = async (e) => {
 
-        const response = await fetch ('/getfinance/${id}', {
+        const response = await fetch (`http://localhost:4000/api/FinanceDetails/${id}`, {
             method: "GET",
             headers: {
                 "Content-type": "application/json"
@@ -42,6 +42,13 @@ const FormEdit = () => {
         }
 
         if(response.ok){
+            setFormData({
+              salesId: json.salesId,
+              invoiceId: json.invoiceId,
+              dateAndTime: json.dateAndTime,
+              amount: json.amount,
+              branchId: json.branchId
+            })
             console.log("Get finance record", json)
         }
     }
@@ -53,16 +60,20 @@ const FormEdit = () => {
     const EditFinanceDetails = async (e) => {
         e.preventDefault()
 
-        const formData = {salesId, invoiceId, dateAndTime, amount, branchId}
+        console.log("Form data", formData)
 
-        const response1 = await fetch ('/updatefinance/${id}', {
+        const {salesId, invoiceId, dateAndTime, amount, branchId} = formData
+
+        const body = JSON.stringify({
+          salesId, invoiceId, dateAndTime, amount, branchId
+      })
+
+        const response1 = await fetch (`http://localhost:4000/api/FinanceDetails/${id}`, {
             method:"PATCH",
             headers:{
                 "Content-Type":"applocation/json"
             },
-            body: JSON.stringify({
-                salesId, invoiceId, dateAndTime, amount, branchId
-            })
+            body
         })
 
         const json1 = await response1.json()
@@ -74,13 +85,12 @@ const FormEdit = () => {
 
         if(response1.ok){
             console.log("Get finance record", json1)
-            navigate("/")
         }
     }
 
   return (
     <div className="form-container">
-      <form className="form-class" onSubmit={handleSubmit}>
+      <form className="form-class" onSubmit={EditFinanceDetails}>
         <div className="form-sub-container">
           <div>
             <label className="form-label">Sales ID</label>
@@ -89,7 +99,7 @@ const FormEdit = () => {
             <input
               type="text"
               className="form-text"
-              onChange={setData}
+              onChange={(e)=>setData(e, 'salesId')}
               value={formData.salesId}
             />
           </div>
@@ -102,7 +112,7 @@ const FormEdit = () => {
             <input
               type="text"
               className="form-text"
-              onChange={setData}
+              onChange={(e)=>setData(e, 'invoiceId')}
               value={formData.invoiceId}
             />
           </div>
@@ -115,7 +125,7 @@ const FormEdit = () => {
             <input
               type="text"
               className="form-text"
-              onChange={setData}
+              onChange={(e)=>setData(e, 'dateAndTime')}
               value={formData.dateAndTime}
             />
           </div>
@@ -128,7 +138,7 @@ const FormEdit = () => {
             <input
               type="text"
               className="form-text"
-              onChange={setData}
+              onChange={(e)=>setData(e, 'amount')}
               value={formData.amount}
             />
           </div>
@@ -141,7 +151,7 @@ const FormEdit = () => {
             <input
               type="text"
               className="form-text"
-              onChange={setData}
+              onChange={(e)=>setData(e, 'branchId')}
               value={formData.branchId}
             />
           </div>

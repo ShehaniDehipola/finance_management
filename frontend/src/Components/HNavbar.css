@@ -84,13 +84,14 @@
     height: 22px;
     position: absolute;
     left: 10%;
-    margin-left: 208px;
+    margin-left: 265px;
     margin-top: 5px;
 }
 
 .btn-add{
     background-color: #49be69;
     margin-left: 15px;
+    font-weight: bold;
 }
 
 .btn-edit{
@@ -105,7 +106,7 @@
 }
 
 .btn-report{
-    margin-left: 410px;
+    margin-left: 440px;
     height: 30px;
     width: 150px;
     background-color: #00aa40;

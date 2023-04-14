@@ -12,11 +12,15 @@ const getFinanceDetails = async (req, res) => {
 const getFinanceDetail = async (req, res) => {
   const { id } = req.params;
 
-  if (!mongoose.Types.ObjectId.isValid(id)) {
+  const decodedId = decodeURI(id);
+  console.log("Backend id", id);
+  console.log("Bckend decoded id", decodedId);
+
+  if (!mongoose.Types.ObjectId.isValid(decodedId)) {
     return res.status(404).json({ error: "No such finance detail" });
   }
 
-  const financeDetail = await FinanceDetail.findById(id);
+  const financeDetail = await FinanceDetail.findById(decodedId);
 
   if (!financeDetail) {
     return res.status(404).json({ error: "No such finance detail" });
@@ -47,11 +51,17 @@ const createFinanceDetail = async (req, res) => {
 const deleteFinanceDetail = async (req, res) => {
   const { id } = req.params;
 
-  if (!mongoose.Types.ObjectId.isValid(id)) {
+  const decodedId = decodeURI(id);
+  console.log("Backend id", id);
+  console.log("Bckend decoded id", decodedId);
+
+  if (!mongoose.Types.ObjectId.isValid(decodedId)) {
     return res.status(404).json({ error: "No such finance detail" });
   }
 
-  const financeDetail = await FinanceDetail.findOneAndDelete({ _id: id });
+  const financeDetail = await FinanceDetail.findOneAndDelete({
+    _id: decodedId,
+  });
 
   if (!financeDetail) {
     return res.status(404).json({ error: "No such finance detail" });
@@ -64,12 +74,18 @@ const deleteFinanceDetail = async (req, res) => {
 const updateFinanceDetail = async (req, res) => {
   const { id } = req.params;
 
-  if (!mongoose.Types.ObjectId.isValid(id)) {
+  const decodedId = decodeURI(id);
+  console.log("Backend id", id);
+  console.log("Bckend decoded id", decodedId);
+
+  if (!mongoose.Types.ObjectId.isValid(decodedId)) {
     return res.status(404).json({ error: "No such finance detail" });
   }
 
+  console.log("Update finance body", req.body);
+
   const financeDetail = await FinanceDetail.findOneAndUpdate(
-    { _id: id },
+    { _id: decodedId },
     {
       ...req.body,
     }

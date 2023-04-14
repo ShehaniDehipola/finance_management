@@ -4,7 +4,6 @@ import Logo from '../images/Logo.png'
 
 const VNavbaar = () => {
   return (
-    <body>
   <div className="VNavbaar">
     <ul>
           <li><img src = {Logo} alt="icon"/></li>
@@ -18,7 +17,6 @@ const VNavbaar = () => {
           <li> <a href="#">Branch</a></li> 
     </ul>
   </div>
-  </body>
   )
 }
 
