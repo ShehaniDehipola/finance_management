@@ -1,92 +1,101 @@
-import React from 'react'
-import { useNavigate, useParams } from 'react-router-dom'
-import { useState, useEffect} from 'react'
+import React from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { useState, useEffect } from "react";
 
 const FormEdit = () => {
+  const navigate = useNavigate();
 
-    const navigate = useNavigate()
+  const [formData, setFormData] = useState({
+    salesId: "",
+    invoiceId: "",
+    dateAndTime: "",
+    amount: "",
+    branchId: "",
+  });
 
-    const [formData, setFormData] = useState({
-        salesId:"",
-        invoiceId:"",
-        dateAndTime:"",
-        amount:"",
-        branchId:""
-    })
+  const setData = (e, key) => {
+    const { value } = e.target;
+    setFormData((prevState) => ({
+      ...prevState,
+      [key]: value,
+    }));
+  };
 
-    const setData = (e, key) =>{
-         const {value} = e.target;
-        setFormData(prevState => ({
-            ...prevState,
-            [key]:value
-        }))
+  const { id } = useParams("");
+  console.log(id);
+
+  const getData = async (e) => {
+    const response = await fetch(
+      `http://localhost:4000/api/FinanceDetails/${id}`,
+      {
+        method: "GET",
+        headers: {
+          "Content-type": "application/json",
+        },
+      }
+    );
+
+    const json = await response.json();
+    console.log(json);
+
+    if (!response.ok) {
+      console.log("Error occured");
     }
 
-    const {id} = useParams("")
-    console.log(id)
+    if (response.ok) {
+      setFormData({
+        salesId: json.salesId,
+        invoiceId: json.invoiceId,
+        dateAndTime: json.dateAndTime,
+        amount: json.amount,
+        branchId: json.branchId,
+      });
+      console.log("Get finance record", json);
+    }
+  };
 
-    const getData = async (e) => {
+  useEffect(() => {
+    getData();
+  }, []);
 
-        const response = await fetch (`http://localhost:4000/api/FinanceDetails/${id}`, {
-            method: "GET",
-            headers: {
-                "Content-type": "application/json"
-            }
-        })
+  const EditFinanceDetails = async (e) => {
+    e.preventDefault();
 
-        const json = await response.json()
-        console.log(json)
+    console.log("Form data", formData);
 
-        if(!response.ok){
-            console.log("Error occured")
-        }
+    const { salesId, invoiceId, dateAndTime, amount, branchId } = formData;
 
-        if(response.ok){
-            setFormData({
-              salesId: json.salesId,
-              invoiceId: json.invoiceId,
-              dateAndTime: json.dateAndTime,
-              amount: json.amount,
-              branchId: json.branchId
-            })
-            console.log("Get finance record", json)
-        }
+    const body = JSON.stringify({
+      salesId,
+      invoiceId,
+      dateAndTime,
+      amount,
+      branchId,
+    });
+
+    const response1 = await fetch(
+      `http://localhost:4000/api/FinanceDetails/${id}`,
+      {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body,
+      }
+    );
+
+    const json1 = await response1.json();
+    console.log(json1);
+
+    if (!response1.ok) {
+      console.log("Error occured");
     }
 
-    useEffect(() => {
-        getData()
-    }, [])
-
-    const EditFinanceDetails = async (e) => {
-        e.preventDefault()
-
-        console.log("Form data", formData)
-
-        const {salesId, invoiceId, dateAndTime, amount, branchId} = formData
-
-        const body = JSON.stringify({
-          salesId, invoiceId, dateAndTime, amount, branchId
-      })
-
-        const response1 = await fetch (`http://localhost:4000/api/FinanceDetails/${id}`, {
-            method:"PATCH",
-            headers:{
-                "Content-Type":"applocation/json"
-            },
-            body
-        })
-
-        const json1 = await response1.json()
-        console.log(json1)
-
-        if(!response1.ok){
-            console.log("Error occured")
-        }
-
-        if(response1.ok){
-            console.log("Get finance record", json1)
-        }
+    if (response1.ok) {
+      console.log("Get finance record", json1);
+      navigate("/financedetails");
     }
+  };
 
   return (
     <div className="form-container">
@@ -97,9 +106,10 @@ const FormEdit = () => {
           </div>
           <div>
             <input
+              disabled
               type="text"
               className="form-text"
-              onChange={(e)=>setData(e, 'salesId')}
+              onChange={(e) => setData(e, "salesId")}
               value={formData.salesId}
             />
           </div>
@@ -110,9 +120,10 @@ const FormEdit = () => {
           </div>
           <div>
             <input
+              disabled
               type="text"
               className="form-text"
-              onChange={(e)=>setData(e, 'invoiceId')}
+              onChange={(e) => setData(e, "invoiceId")}
               value={formData.invoiceId}
             />
           </div>
@@ -125,7 +136,7 @@ const FormEdit = () => {
             <input
               type="text"
               className="form-text"
-              onChange={(e)=>setData(e, 'dateAndTime')}
+              onChange={(e) => setData(e, "dateAndTime")}
               value={formData.dateAndTime}
             />
           </div>
@@ -138,7 +149,7 @@ const FormEdit = () => {
             <input
               type="text"
               className="form-text"
-              onChange={(e)=>setData(e, 'amount')}
+              onChange={(e) => setData(e, "amount")}
               value={formData.amount}
             />
           </div>
@@ -151,17 +162,23 @@ const FormEdit = () => {
             <input
               type="text"
               className="form-text"
-              onChange={(e)=>setData(e, 'branchId')}
+              onChange={(e) => setData(e, "branchId")}
               value={formData.branchId}
             />
           </div>
         </div>
         <div className="btn-container">
-          <button type="submit" onClick={EditFinanceDetails} className="btn-update">UPDATE</button>
+          <button
+            type="submit"
+            onClick={EditFinanceDetails}
+            className="btn-update"
+          >
+            UPDATE
+          </button>
         </div>
       </form>
     </div>
-  )
-}
+  );
+};
 
-export default FormEdit
+export default FormEdit;

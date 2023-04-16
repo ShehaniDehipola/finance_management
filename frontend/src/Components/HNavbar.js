@@ -13,10 +13,10 @@ const HNavbaar = () => {
           <div className='li vertical-line'></div>
           <li className='li'> <a href="/insertfinance"><button className='btn btn-add'>+ Add </button></a></li> 
           <li className='li'>
-            <form className='d-flex' role='search'>
+            {/* <form className='d-flex' role='search'>
               <input type='search' className='search-bar' aria-label='Search'/>
               <button type='submit' className='btn-search'>Search</button>
-            </form>
+            </form> */}
           </li>
           <li className='li'> <a href="#"><button className='btn-report'>Generate Report</button></a></li>
           </div>

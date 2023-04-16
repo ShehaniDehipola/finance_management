@@ -16,6 +16,35 @@ const Form = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
+    //validations
+    const validationErrors = {}
+
+    if(!salesId.trim()){
+      validationErrors.salesId = 'Sales ID is required'
+    }
+
+    if(!invoiceId.trim()){
+      validationErrors.invoiceId = 'Sales ID is required'
+    }
+
+    if(!dateAndTime.trim()){
+      validationErrors.dateAndTime = 'Date AndTime is required'
+    }
+
+    if(!amount.trim()){
+      validationErrors.amount = 'Amount ID is required'
+    }
+
+    if(!branchId.trim()){
+      validationErrors.branchId = 'Branch ID is required'
+    }
+
+    if(Object.keys(validationErrors).length){
+      setError(validationErrors)
+      alert("Something is wrong, Try again")
+      return
+    }
+
     try {
       const financeRecord = {
         salesId,
@@ -84,11 +113,12 @@ const Form = () => {
         </div>
         <div className="form-sub-container">
           <div>
-            <label className="form-label">Enter date and time</label>
+            <label className="form-label">Enter date</label>
           </div>
           <div>
             <input
-              type="text"
+              type="date"
+              date-format="dd-mm-yyyy"
               className="form-text"
               onChange={(e) => setdateAndTime(e.target.value)}
               value={dateAndTime}

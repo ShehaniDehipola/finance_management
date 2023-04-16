@@ -1,14 +1,16 @@
 import React from "react";
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { read, utils } from "xlsx";
-import XLSX from 'xlsx';
 import IndividualData from "../Components/IndividualData";
-import './FormTwo.css'
+import Upload from "../images/Upload.png";
+import "./FormTwo.css";
 
 const FormTwo = () => {
   //on change states
   const [excelFile, setExcelFile] = useState(null);
   const [excelFileError, setExcelFileError] = useState(null);
+  const navigate = useNavigate();
 
   console.log(excelFile);
 
@@ -33,7 +35,9 @@ const FormTwo = () => {
         const worksheetName = workbook.SheetNames[0];
         const worksheet = workbook.Sheets[worksheetName];
         console.log("worksheet", worksheet);
+
         const jsonData = utils.sheet_to_json(worksheet); //coverting sheet data into json
+        console.log("Excel data", jsonData);
         setExcelData(jsonData);
 
         console.log("jsonData", jsonData);
@@ -48,16 +52,28 @@ const FormTwo = () => {
   };
 
   //handleSubmit function
-  const handleSubmit = (e) => {
-    e.preventdefault();
-    if (excelFile !== null) {
-      const workbook = XLSX.read(excelFile, { type: "buffer" });
-      const worksheetName = workbook.SheetNames[0];
-      const worksheet = workbook.Sheets[worksheetName]; //all the data in file are assigned to this worksheet variable
-      const data = XLSX.utils.sheet_to_json(worksheet);
-      setExcelData(data);
-    } else {
-      setExcelData(null);
+  const handleSubmit = async (e) => {
+    try {
+      if (excelData != null) {
+        const response = await fetch(
+          "http://localhost:4000/api/FinanceDetails/batch",
+          {
+            method: "POST",
+            body: JSON.stringify({ data: excelData }),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+        if (response.ok) {
+          alert("Excel sheet added successfully");
+          navigate("/financedetails");
+        } else {
+          console.log("Error!", response);
+        }
+      }
+    } catch (error) {
+      console.log("Excel error", error);
     }
   };
 
@@ -65,54 +81,65 @@ const FormTwo = () => {
     <div className="container">
       {/*upload file section*/}
       <div className="form">
-        <form className="form-group" autoComplete="off" onSubmit={handleSubmit}>
-          <label>
-            <h5>Upload Excel File</h5>
-          </label>
-          <br></br>
-          <input
-            type="file"
-            className="form-control"
-            onChange={handleFile}
-            required
-          ></input>
-          {excelFileError && (
-            <div className="text-danger">{excelFileError}</div>
-          )}
-          <button type="submit" className="btn btn-success">
-            Submit
+        <form className="form-group" autoComplete="off">
+          <div className="form-btn-container">
+            <img className="img-upload" src={Upload} alt="upload"></img>
+            <label className="label">
+              <h4 className="h5">Select your excel file</h4>
+            </label>
+            <div className="file-btn-control">
+              <label className="file-btn">
+                <input
+                  type="file"
+                  className="form-control"
+                  onChange={handleFile}
+                  hidden
+                  required
+                ></input>
+                {excelFileError && (
+                  <div className="text-danger">{excelFileError}</div>
+                )}
+                Browse
+              </label>
+            </div>
+          </div>
+          <button type="submit" className="btn-success" onClick={handleSubmit}>
+            Upload File
           </button>
         </form>
       </div>
 
-      <br></br>
-      <hr></hr>
+      {/* <br></br>
+      <hr></hr> */}
 
-      {/*view file section*/}
-      <h5 className="h5">View Excel File</h5>
-      <div className="viewer">
-        {/* {excelData === null && <>No file selected</>} */}
-        {excelData !== null && excelData.length ? (
+      {/* <div>
+        <h5 className="h5-2">View Excel File</h5>
+        <div className="viewer">
+          {excelData !== null && excelData.length ? (
             <div className="table-responsive">
-                <table className="table">
-                    <thead>
-                        <tr>
-                           <th scope="col">Sales ID</th> 
-                           <th scope="col">Invoice ID</th> 
-                           <th scope="col">Date And Time</th> 
-                           <th scope="col">Amount</th> 
-                           <th scope="col">Branch ID</th> 
-                        </tr>
-                    </thead>
-                    <tbody>
-                        {
-                            excelData.map((individualExcelData) => <IndividualData key={individualExcelData.SalesID} individualExcelData={individualExcelData}/>)
-                        }
-                    </tbody>
-                </table>
+              <table className="table">
+                <thead>
+                  <tr>
+                    <th scope="col">Sales ID</th>
+                    <th scope="col">Invoice ID</th>
+                    <th scope="col">Date And Time</th>
+                    <th scope="col">Amount</th>
+                    <th scope="col">Branch ID</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {excelData.map((individualExcelData) => (
+                    <IndividualData
+                      key={individualExcelData.salesId}
+                      individualExcelData={individualExcelData}
+                    />
+                  ))}
+                </tbody>
+              </table>
             </div>
-        ): null}
-      </div>
+          ) : null}
+        </div>
+      </div> */}
     </div>
   );
 };

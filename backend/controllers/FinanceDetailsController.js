@@ -47,6 +47,18 @@ const createFinanceDetail = async (req, res) => {
   }
 };
 
+//create multiple details
+const createMultipleFinanceDetails = async (req, res) => {
+  const { data } = req.body;
+
+  try {
+    const finance = await FinanceDetail.insertMany(data);
+    res.status(200).json(finance);
+  } catch (error) {
+    res.status(400).json({ error: error.message });
+  }
+};
+
 //delete detail
 const deleteFinanceDetail = async (req, res) => {
   const { id } = req.params;
@@ -74,6 +86,8 @@ const deleteFinanceDetail = async (req, res) => {
 const updateFinanceDetail = async (req, res) => {
   const { id } = req.params;
 
+  console.log("Request", req);
+
   const decodedId = decodeURI(id);
   console.log("Backend id", id);
   console.log("Bckend decoded id", decodedId);
@@ -98,10 +112,27 @@ const updateFinanceDetail = async (req, res) => {
   res.status(200).json(financeDetail);
 };
 
+//search detail
+const searchDetail = async (req, res) => {
+  const { query } = req.body;
+
+  console.log("Search", req.body);
+
+  const financeDetail = await FinanceDetail.find(query);
+
+  if (!financeDetail) {
+    return res.status(404).json({ error: "No such finance detail" });
+  }
+
+  res.status(200).json(financeDetail);
+};
+
 module.exports = {
   getFinanceDetails,
   getFinanceDetail,
   createFinanceDetail,
+  createMultipleFinanceDetails,
   deleteFinanceDetail,
   updateFinanceDetail,
+  searchDetail,
 };

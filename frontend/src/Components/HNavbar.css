@@ -15,14 +15,13 @@
 }
 
 .h2{
-    font-family: 'Open Sans';
+    font-weight: 500;
     margin-left: 10px;
 }
 
 .button-container{
     margin-left: 5px;
     margin-top: 20px;
-    width: 100%;
 }
 
 .li{
@@ -106,10 +105,11 @@
 }
 
 .btn-report{
-    margin-left: 440px;
+    margin-left: 780px;
     height: 30px;
     width: 150px;
-    background-color: #00aa40;
+    background-color: #011A81;
+    color: #fff;
     border: none;
     border-radius: 5px;
 }

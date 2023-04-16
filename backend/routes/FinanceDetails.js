@@ -1,27 +1,35 @@
-const express = require('express')
+const express = require("express");
 const {
-    getFinanceDetails,
-    getFinanceDetail,
-    createFinanceDetail,
-    deleteFinanceDetail,
-    updateFinanceDetail
-} = require('../controllers/FinanceDetailsController')
+  getFinanceDetails,
+  getFinanceDetail,
+  createFinanceDetail,
+  createMultipleFinanceDetails,
+  deleteFinanceDetail,
+  updateFinanceDetail,
+  searchDetail,
+} = require("../controllers/FinanceDetailsController");
 
-const router = express.Router()
+const router = express.Router();
 
 //GET all finance details
-router.get('/', getFinanceDetails)
+router.get("/", getFinanceDetails);
 
 //GET a single detail
-router.get('/:id', getFinanceDetail)
+router.get("/:id", getFinanceDetail);
 
 //POST a new detail
-router.post('/', createFinanceDetail)
+router.post("/", createFinanceDetail);
+
+//Create new multiple details
+router.post("/batch", createMultipleFinanceDetails);
 
 //DELETE a detail
-router.delete('/:id', deleteFinanceDetail)
+router.delete("/:id", deleteFinanceDetail);
 
 //UPDATE a detail
-router.patch('/:id', updateFinanceDetail)
+router.put("/:id", updateFinanceDetail);
 
-module.exports = router
+//search a detail
+router.post("/search", searchDetail);
+
+module.exports = router;
